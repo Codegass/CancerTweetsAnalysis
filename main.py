@@ -5,6 +5,7 @@ from tweepy import OAuthHandler
 from tweepy import Stream
 
 from textblob import TextBlob
+import nltk
  
 import twitter_credentials
 
@@ -18,7 +19,7 @@ import re
 class TwitterClient():
     def __init__(self, twitter_user=None):
         self.auth = TwitterAuthenticator().authenticate_twitter_app()
-        self.twitter_client = API(self.auth, wait_on_rate_limit=True) # must add limit to wait, stander api only gives 450 per 15min
+        self.twitter_client = API(self.auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True) # must add limit to wait, stander api only gives 450 per 15min
 
         self.twitter_user = twitter_user
 
@@ -138,7 +139,7 @@ class TweetAnalyzer():
 if __name__ == '__main__':
 
     TOPIC_SEARCH = 'cancersucks -filter:retweets'
-    NUMBER_OF_TWEETS = 15
+    NUMBER_OF_TWEETS = 1200
 
     twitter_client = TwitterClient()
     tweet_analyzer = TweetAnalyzer()
