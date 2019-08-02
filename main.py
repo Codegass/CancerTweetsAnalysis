@@ -24,7 +24,7 @@ class TwitterClient():
 
     def search_for_tweets_with_hashtag(self, new_search, count):
         tweets = []
-        all_tweets = Cursor(self.twitter_client.search, q = new_search, lang = 'en').items(count)
+        all_tweets = Cursor(self.twitter_client.search, q = new_search, lang = 'en', tweet_mode='extended').items(count)
         for tweet in all_tweets:
             tweets.append(tweet)
         return tweets
@@ -121,10 +121,12 @@ class TweetAnalyzer():
             return -1
 
     def tweets_to_data_frame(self, tweets):
-        df = pd.DataFrame(data=[tweet.text for tweet in tweets], columns=['tweets'])
+        # be careful when you use the tweet_mode='extended', you need to use 
+        # status.full_text to replace the status.text
+        df = pd.DataFrame(data=[tweet.full_text for tweet in tweets], columns=['tweets'])
 
         df['id'] = np.array([tweet.id for tweet in tweets])
-        df['len'] = np.array([len(tweet.text) for tweet in tweets])
+        df['len'] = np.array([len(tweet.full_text) for tweet in tweets])
         df['date'] = np.array([tweet.created_at for tweet in tweets])
         df['source'] = np.array([tweet.source for tweet in tweets])
         df['likes'] = np.array([tweet.favorite_count for tweet in tweets])
@@ -148,4 +150,5 @@ if __name__ == '__main__':
     df = tweet_analyzer.tweets_to_data_frame(tweets)
     df['sentiment'] = np.array([tweet_analyzer.analyze_sentiment(tweet) for tweet in df['tweets']])
 
+    df.to_csv("data.csv")
     print(df.head(10))
