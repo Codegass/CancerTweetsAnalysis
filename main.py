@@ -25,7 +25,7 @@ class TwitterClient():
 
     def search_for_tweets_with_hashtag(self, new_search, count):
         tweets = []
-        all_tweets = Cursor(self.twitter_client.search, q = new_search, lang = 'en', tweet_mode='extended').items(count)
+        all_tweets = Cursor(self.twitter_client.search, q = new_search, lang = 'en', tweet_mode='extended', result_type='mixed', count = 100,).items(count)
         for tweet in all_tweets:
             tweets.append(tweet)
         return tweets
@@ -138,8 +138,8 @@ class TweetAnalyzer():
  
 if __name__ == '__main__':
 
-    TOPIC_SEARCH = 'cancersucks -filter:retweets'
-    NUMBER_OF_TWEETS = 1200
+    TOPIC_SEARCH = 'fuckcancer -filter:retweets'
+    NUMBER_OF_TWEETS = 5000
 
     twitter_client = TwitterClient()
     tweet_analyzer = TweetAnalyzer()
@@ -151,5 +151,5 @@ if __name__ == '__main__':
     df = tweet_analyzer.tweets_to_data_frame(tweets)
     df['sentiment'] = np.array([tweet_analyzer.analyze_sentiment(tweet) for tweet in df['tweets']])
 
-    df.to_csv("data.csv")
+    df.to_csv("data_fuck_cancer.csv")
     print(df.head(10))

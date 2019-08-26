@@ -19,7 +19,7 @@ class nltk_analyzer():
 
         self.all_tweets_tokens = self.clean_tweet(sentence).split()
         self.clean_tokens = list()
-        self.project_specific_list = ['one','please', 'time', 'cancersucks', 'cancer'] 
+        self.project_specific_list = ['one','please', 'time', 'cancersucks', 'cancer', 'fuckcancer', 'going', 'day', 'amp'] 
         self.clean_tokens_without_sr(self.all_tweets_tokens)
         
 
@@ -41,7 +41,7 @@ class nltk_analyzer():
             key.append(k)
             value.append(v)
 
-        return key[:20],value[:20]
+        return key[:30],value[:30]
 
 
 ### Graph Data ###
@@ -52,7 +52,8 @@ class graph():
 
     def sentiment_data(self, df):
         Negtive = df.groupby(['sentiment']).size()[-1]
-        Positive = df.groupby(['sentiment']).size()[-1]
+        # print('Neg:%d'%(Negtive))
+        Positive = df.groupby(['sentiment']).size()[1]
         Neutrality = df.groupby(['sentiment']).size()[0]
 
         labels = ['Negtive','Positive','Neutrality']
@@ -64,6 +65,7 @@ class graph():
 app = dash.Dash('Cancer Tweets Analyzer Dashboard')
 
 tweets_dataframe = pd.read_csv("data.csv")
+print('pd size is %d'%len(tweets_dataframe))
 labels_sen, values_sen = graph().sentiment_data(tweets_dataframe)
 labels_fre, values_fre = nltk_analyzer(tweets_dataframe).Freq()
 
