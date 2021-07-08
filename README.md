@@ -1,6 +1,6 @@
 # CancerTweetsAnalysis
 
-by Chenhao Wei
+by Codegass.
 
 To run the dashboard please run
 `pip3 install dash dash-html-components dash-html-components`
